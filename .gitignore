@@ -64,7 +64,6 @@ app.*.map.json
 *~
 
 # Development tools
-.specify/
 .env
 .env.local
 

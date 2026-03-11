@@ -60,6 +60,16 @@ Enhancement suggestions are tracked as GitHub issues.
 
 ## Development Guidelines
 
+### Setup Your Development Environment
+
+1. **Install Flutter & Dart** (see README.md for details)
+2. **Install Speckit** (optional but recommended):
+   ```bash
+   npm install -g speckit
+   speckit doctor
+   ```
+   See [SPECKIT_SETUP.md](SPECKIT_SETUP.md) for detailed instructions.
+
 ### Code Style
 
 Follow the [Effective Dart](https://dart.dev/guides/language/effective-dart) style guide:

@@ -107,11 +107,71 @@ itpapp/
 ├── windows/                # Windows-specific code
 ├── macos/                  # macOS-specific code
 ├── linux/                  # Linux-specific code
-├── pubspec.yaml            # Project dependencies
-├── pubspec.lock            # Locked dependency versions
-├── analysis_options.yaml   # Dart analysis rules
-└── README.md               # This file
+├── .github/               # GitHub workflows and Speckit configs
+│   ├── agents/            # Speckit custom agents
+│   └── prompts/           # Speckit prompt templates
+├── .specify/              # Speckit project configuration
+├── pubspec.yaml           # Project dependencies
+├── pubspec.lock           # Locked dependency versions
+├── analysis_options.yaml  # Dart analysis rules
+└── README.md              # This file
 ```
+
+## Development Setup with Speckit
+
+This project uses **Speckit** for structured development planning and task management.
+
+### Install Speckit
+
+1. **Install Speckit CLI:**
+   ```bash
+   npm install -g speckit
+   ```
+   Or using alternatives:
+   ```bash
+   # Using yarn
+   yarn global add speckit
+   
+   # Using pnpm
+   pnpm add -g speckit
+   ```
+
+2. **Verify installation:**
+   ```bash
+   speckit --version
+   ```
+
+### Using Speckit
+
+Once installed, you can use Speckit commands to manage specifications and tasks:
+
+```bash
+# Check project status
+speckit check
+
+# Generate specifications
+speckit specify <description>
+
+# Create implementation plan
+speckit plan
+
+# View tasks
+speckit tasks
+
+# More commands
+speckit --help
+```
+
+The Speckit configuration is stored in:
+- `.specify/` - Local Speckit state and cached data
+- `.github/agents/` - Custom agent definitions
+- `.github/prompts/` - Prompt templates
+
+For more information, see the [Speckit Documentation](https://speckit.ai).
+
+### Optional: Skip Speckit
+
+If you don't need Speckit for your workflow, you can still use the app normally without installing it. All Flutter and development functionality works independently.
 
 ## Contributing
 
