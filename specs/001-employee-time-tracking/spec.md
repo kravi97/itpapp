@@ -10,6 +10,15 @@
 
 InTimePro is a comprehensive mobile time tracking and workforce management application that enables employees to track work activities, manage tasks, submit timesheets, apply for leaves, and monitor project progress. The application serves as the primary interface for employees to log their daily work activities and manage their time effectively.
 
+## Clarifications
+
+### Session 2026-03-12
+- Q: Expected user base size and concurrent usage patterns? → A: Medium scale (100-1000 employees total; 20-50 concurrent users during peak; 5-20 tasks/day per employee)
+- Q: Security and compliance framework requirements? → A: General Security (AES-256 at rest, TLS 1.2+ in transit, basic audit logging for sensitive operations)
+- Q: Observability and monitoring requirements? → A: Minimal (ERROR-level logs only; no metrics or tracing; post-incident debug logs available)
+- Q: External API failure handling strategy? → A: Fail Fast (show error immediately, require manual retry, no offline fallback)
+- Q: Data retention and deletion policy? → A: Standard (completed timesheets retained indefinitely for audit/payroll; task/project data retained 12 months post-completion; employee personal data deleted 30 days post-offboarding; cache cleared on logout)
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Employee Authentication & Onboarding (Priority: P1)
@@ -358,6 +367,7 @@ An employee needs to view and update account information, configure notification
 
 ## Assumptions
 
+- **User Base & Scale**: System is designed for medium-scale deployment (100-1,000 employees total) with 20-50 concurrent users during peak hours and 5-20 tasks created per employee per day
 - Employees have access to iOS or Android mobile devices with internet connectivity
 - Company provides backend API infrastructure for authentication, data storage, and synchronization
 - Employees work standard business hours with occasional overtime tracked through the system
@@ -394,10 +404,13 @@ An employee needs to view and update account information, configure notification
 
 ## Constraints
 
+- **Security Posture**: Standard encryption (AES-256 at rest, TLS 1.2+ for all API communication), basic audit logging for authentication, password changes, timesheet submission, and leave approvals; no specific regulatory compliance mandate (GDPR, HIPAA, SOC2) required
+- **Observability & Logging**: Minimal observability approach with ERROR-level application logs only; no real-time metrics collection or distributed tracing; post-incident debug logs available for troubleshooting
+- **External API Failure Handling**: Fail-fast strategy with immediate error display to users; users must manually retry failed operations; no offline fallback or graceful degradation for backend service failures
+- **Data Retention & Deletion**: Completed timesheets retained indefinitely for audit and payroll compliance; task and project historical data retained for 12 months post-completion; employee personal data (profile, credentials, preferences) deleted within 30 days of account offboarding; local device cache cleared on logout
 - Must comply with company data privacy and security policies
 - Must support iOS 13+ and Android 8.0+ as minimum platform versions
 - Must operate within mobile device battery constraints (background timers, sync frequency)
-- Must support offline operation for time tracking with eventual consistency sync
 - Must encrypt sensitive data at rest (credentials, personal information)
 - Must use secure communication protocols (HTTPS, TLS 1.2+) for all API calls
 - Must respect platform-specific UI/UX guidelines (Material Design for Android, Human Interface Guidelines for iOS)
