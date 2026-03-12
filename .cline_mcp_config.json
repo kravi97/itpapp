@@ -1,0 +1,56 @@
+{
+  "mcpServers": {
+    "speckit-tools": {
+      "description": "Speckit development workflow automation",
+      "disabled": false,
+      "tools": {
+        "check-prerequisites": {
+          "script": ".specify/scripts/powershell/check-prerequisites.ps1",
+          "description": "Validate project prerequisites and configuration"
+        },
+        "setup-plan": {
+          "script": ".specify/scripts/powershell/setup-plan.ps1",
+          "description": "Initialize and manage implementation plans"
+        },
+        "create-feature": {
+          "script": ".specify/scripts/powershell/create-new-feature.ps1",
+          "description": "Create new feature specifications and tasks"
+        },
+        "update-context": {
+          "script": ".specify/scripts/powershell/update-agent-context.ps1",
+          "description": "Update AI agent context and knowledge base"
+        }
+      }
+    }
+  },
+  "projectIntegrations": {
+    "flutter": {
+      "enabled": true,
+      "pubspec": "pubspec.yaml",
+      "features": [
+        "dependency-management",
+        "code-generation",
+        "widget-scaffolding",
+        "testing-automation"
+      ]
+    },
+    "speckit": {
+      "enabled": true,
+      "configDir": ".specify",
+      "features": [
+        "spec-generation",
+        "plan-management",
+        "task-organization",
+        "documentation"
+      ]
+    }
+  },
+  "customActions": {
+    "pub-get": "flutter pub get",
+    "pub-add": "flutter pub add {package}",
+    "pub-remove": "flutter pub remove {package}",
+    "run-tests": "flutter test",
+    "build-apk": "flutter build apk",
+    "build-web": "flutter build web"
+  }
+}
