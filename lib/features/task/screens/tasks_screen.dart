@@ -39,22 +39,15 @@ class TasksScreen extends ConsumerWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.checklist_rtl,
-                          size: 64,
-                          color: Colors.grey[300],
-                        ),
+                        Icon(Icons.checklist_rtl, size: 64, color: Colors.grey[300]),
                         const SizedBox(height: 16),
-                        Text(
-                          'No tasks yet',
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
+                        Text('No tasks yet', style: Theme.of(context).textTheme.titleLarge),
                         const SizedBox(height: 8),
                         Text(
                           'Create one to get started!',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.grey[600],
-                          ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
                         ),
                       ],
                     ),
@@ -88,18 +81,13 @@ class TasksScreen extends ConsumerWidget {
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stackTrace) => Center(
-            child: Text('Error: $error'),
-          ),
+          error: (error, stackTrace) => Center(child: Text('Error: $error')),
         ),
       ),
       floatingActionButton: AnimatedFloatingActionButton(
         icon: Icons.add,
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) => const _CreateTaskDialog(),
-          );
+          showDialog(context: context, builder: (context) => const _CreateTaskDialog());
         },
         tooltip: 'Create new task',
       ),
@@ -123,10 +111,9 @@ class _TaskCardState extends State<_TaskCard> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final progressValue =
-        widget.task.estimatedHours > 0
-            ? (widget.task.elapsedHours / widget.task.estimatedHours).clamp(0.0, 1.0)
-            : 0.0;
+    final progressValue = widget.task.estimatedHours > 0
+        ? (widget.task.elapsedHours / widget.task.estimatedHours).clamp(0.0, 1.0)
+        : 0.0;
     final statusColor = _getStatusColor(widget.task.status);
 
     return GestureDetector(
@@ -143,12 +130,7 @@ class _TaskCardState extends State<_TaskCard> {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              border: Border(
-                left: BorderSide(
-                  color: statusColor,
-                  width: 4,
-                ),
-              ),
+              border: Border(left: BorderSide(color: statusColor, width: 4)),
             ),
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -163,19 +145,14 @@ class _TaskCardState extends State<_TaskCard> {
                       Expanded(
                         child: Text(
                           widget.task.title,
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       const SizedBox(width: 12),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 5,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                         decoration: BoxDecoration(
                           color: statusColor,
                           borderRadius: BorderRadius.circular(12),
@@ -202,26 +179,16 @@ class _TaskCardState extends State<_TaskCard> {
                   // Project Name
                   Row(
                     children: [
-                      Icon(
-                        Icons.folder,
-                        size: 14,
-                        color: Colors.grey[600],
-                      ),
+                      Icon(Icons.folder, size: 14, color: Colors.grey[600]),
                       const SizedBox(width: 6),
                       Text(
                         widget.task.projectName ?? 'No Project',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: Colors.grey[600],
-                        ),
+                        style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
                       ),
                       if (widget.task.isBillable) ...[
                         const SizedBox(width: 8),
-                        Icon(
-                          Icons.monetization_on,
-                          size: 14,
-                          color: Colors.amber[600],
-                        ),
-                      ]
+                        Icon(Icons.monetization_on, size: 14, color: Colors.amber[600]),
+                      ],
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -232,15 +199,11 @@ class _TaskCardState extends State<_TaskCard> {
                       children: [
                         Text(
                           'Progress',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: Colors.grey[600],
-                          ),
+                          style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
                         ),
                         Text(
                           '${(progressValue * 100).toStringAsFixed(0)}%',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
@@ -265,40 +228,32 @@ class _TaskCardState extends State<_TaskCard> {
                         children: [
                           Text(
                             'Time Tracked',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: Colors.grey[600],
-                            ),
+                            style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             '${widget.task.elapsedHours.toStringAsFixed(1)}h / ${widget.task.estimatedHours.toStringAsFixed(1)}h',
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
                           ),
                         ],
                       ),
                       const SizedBox(width: 8),
-                      ScaleUpEntrance(
-                        child: ElevatedButton.icon(
-                          onPressed: widget.task.isActive ? null : widget.onStart,
-                          icon: Icon(
-                            widget.task.isActive
-                                ? Icons.play_circle
-                                : Icons.play_arrow,
-                            size: 18,
-                          ),
-                          label: Text(widget.task.isActive ? 'Active' : 'Start'),
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
+                      IntrinsicWidth(
+                        child: ScaleUpEntrance(
+                          child: ElevatedButton.icon(
+                            onPressed: widget.task.isActive ? null : widget.onStart,
+                            icon: Icon(
+                              widget.task.isActive ? Icons.play_circle : Icons.play_arrow,
+                              size: 18,
                             ),
-                            textStyle: const TextStyle(fontSize: 13),
-                            backgroundColor:
-                                widget.task.isActive
-                                    ? Colors.grey[300]
-                                    : statusColor,
+                            label: Text(widget.task.isActive ? 'Active' : 'Start'),
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              textStyle: const TextStyle(fontSize: 13),
+                              backgroundColor: widget.task.isActive
+                                  ? Colors.grey[300]
+                                  : statusColor,
+                            ),
                           ),
                         ),
                       ),
@@ -524,14 +479,8 @@ class _CreateTaskDialogState extends ConsumerState<_CreateTaskDialog> {
           ),
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: _createTask,
-            child: const Text('Create'),
-          ),
+          TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+          ElevatedButton(onPressed: _createTask, child: const Text('Create')),
         ],
       ),
     );

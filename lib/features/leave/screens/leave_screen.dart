@@ -19,7 +19,7 @@ class LeaveScreen extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            // Leave Balance
+            // Leave Balance (same loader as Timesheet top section)
             leaveBalanceAsync.when(
               data: (balance) => _LeaveBalanceCard(balance: balance),
               loading: () => const Card(

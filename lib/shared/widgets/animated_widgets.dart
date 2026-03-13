@@ -20,10 +20,7 @@ class FadeInSlide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FadeInUp(
-      duration: duration,
-      child: child,
-    );
+    return FadeInUp(duration: duration, child: child);
   }
 }
 
@@ -82,10 +79,7 @@ class _AnimatedListTileState extends State<AnimatedListTile> {
               title: widget.title,
               subtitle: widget.subtitle,
               trailing: widget.trailing,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             ),
           ),
         ),
@@ -132,10 +126,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
         child: AnimatedScale(
           scale: _isPressed ? 0.95 : 1.0,
           duration: widget.animationDuration,
-          child: Card(
-            color: widget.backgroundColor,
-            child: widget.child,
-          ),
+          child: Card(color: widget.backgroundColor, child: widget.child),
         ),
       ),
     );
@@ -187,10 +178,8 @@ class AnimatedBottomSheet {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) => FadeInUp(
-        duration: const Duration(milliseconds: 400),
-        child: builder(context),
-      ),
+      builder: (context) =>
+          FadeInUp(duration: const Duration(milliseconds: 400), child: builder(context)),
     );
   }
 }
@@ -215,10 +204,7 @@ class SmoothPageTransition extends StatelessWidget {
     return FadeInUp(
       duration: const Duration(milliseconds: 500),
       child: Scaffold(
-        appBar: appBar ??
-            (showAppBar
-                ? AppBar(title: Text(title ?? ''))
-                : null),
+        appBar: appBar ?? (showAppBar ? AppBar(title: Text(title ?? '')) : null),
         body: child,
       ),
     );
@@ -241,22 +227,17 @@ class AnimatedFloatingActionButton extends StatefulWidget {
   });
 
   @override
-  State<AnimatedFloatingActionButton> createState() =>
-      _AnimatedFloatingActionButtonState();
+  State<AnimatedFloatingActionButton> createState() => _AnimatedFloatingActionButtonState();
 }
 
-class _AnimatedFloatingActionButtonState
-    extends State<AnimatedFloatingActionButton>
+class _AnimatedFloatingActionButtonState extends State<AnimatedFloatingActionButton>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
+    _controller = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
   }
 
   @override
@@ -275,9 +256,10 @@ class _AnimatedFloatingActionButtonState
   @override
   Widget build(BuildContext context) {
     return ScaleTransition(
-      scale: Tween<double>(begin: 1, end: 0.9).animate(
-        CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-      ),
+      scale: Tween<double>(
+        begin: 1,
+        end: 0.9,
+      ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut)),
       child: FloatingActionButton(
         tooltip: widget.tooltip,
         backgroundColor: widget.backgroundColor,
@@ -377,11 +359,7 @@ class AnimatedProgressBar extends StatelessWidget {
         backgroundColor: bgColor,
         valueColor: AlwaysStoppedAnimation(progressColor),
       ),
-    ).animate().slideX(
-          begin: -1,
-          end: 0,
-          duration: const Duration(milliseconds: 800),
-        );
+    ).animate().slideX(begin: -1, end: 0, duration: const Duration(milliseconds: 800));
   }
 }
 
@@ -400,10 +378,6 @@ class ScaleUpEntrance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ZoomIn(
-      duration: duration,
-      curve: curve,
-      child: child,
-    );
+    return ZoomIn(duration: duration, curve: curve, child: child);
   }
 }

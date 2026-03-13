@@ -38,22 +38,15 @@ class ProjectsScreen extends ConsumerWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.folder_open,
-                            size: 64,
-                            color: Colors.grey[300],
-                          ),
+                          Icon(Icons.folder_open, size: 64, color: Colors.grey[300]),
                           const SizedBox(height: 16),
-                          Text(
-                            'No Projects',
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
+                          Text('No Projects', style: Theme.of(context).textTheme.titleLarge),
                           const SizedBox(height: 8),
                           Text(
                             'No projects assigned yet',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Colors.grey[600],
-                            ),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
                           ),
                         ],
                       ),
@@ -131,22 +124,21 @@ class _ProjectCardState extends State<_ProjectCard> {
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          boxShadow:
-              _isHovered
-                  ? [
-                    BoxShadow(
-                      color: statusColor.withAlpha(100),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ]
-                  : [
-                    BoxShadow(
-                      color: Colors.black.withAlpha(30),
-                      blurRadius: 4,
-                      offset: const Offset(0, 1),
-                    ),
-                  ],
+          boxShadow: _isHovered
+              ? [
+                  BoxShadow(
+                    color: statusColor.withAlpha(100),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
+              : [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(30),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
         ),
         child: Card(
           margin: const EdgeInsets.only(bottom: 12),
@@ -165,19 +157,16 @@ class _ProjectCardState extends State<_ProjectCard> {
                       Expanded(
                         child: Text(
                           widget.project.name,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
                           color: statusColor,
                           borderRadius: BorderRadius.circular(12),
@@ -203,39 +192,31 @@ class _ProjectCardState extends State<_ProjectCard> {
                   const SizedBox(height: 12),
                   Text(
                     widget.project.description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
-                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      Icon(
-                        Icons.person,
-                        size: 14,
-                        color: Colors.grey[500],
-                      ),
+                      Icon(Icons.person, size: 14, color: Colors.grey[500]),
                       const SizedBox(width: 6),
                       Text(
                         'Client: ${widget.project.clientName}',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey[600],
-                        ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
                       ),
                       const Spacer(),
-                      Icon(
-                        Icons.supervised_user_circle,
-                        size: 14,
-                        color: Colors.grey[500],
-                      ),
+                      Icon(Icons.supervised_user_circle, size: 14, color: Colors.grey[500]),
                       const SizedBox(width: 6),
                       Text(
                         'PM: ${widget.project.projectManager}',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey[600],
-                        ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
                       ),
                     ],
                   ),
@@ -248,18 +229,14 @@ class _ProjectCardState extends State<_ProjectCard> {
                           children: [
                             Text(
                               'Progress',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Colors.grey[600],
-                              ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
                             ),
                             const SizedBox(height: 6),
                             AnimatedProgressBar(
-                              value:
-                                  widget.project.progressPercentage / 100,
-                              color:
-                                  _getProgressColor(
-                                    widget.project.progressPercentage,
-                                  ),
+                              value: widget.project.progressPercentage / 100,
+                              color: _getProgressColor(widget.project.progressPercentage),
                               height: 8,
                             ),
                           ],
@@ -268,9 +245,9 @@ class _ProjectCardState extends State<_ProjectCard> {
                       const SizedBox(width: 12),
                       Text(
                         '${widget.project.progressPercentage}%',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
@@ -290,9 +267,9 @@ class _ProjectCardState extends State<_ProjectCard> {
                           children: [
                             Text(
                               'Budget',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Colors.grey[600],
-                              ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
                             ),
                             const SizedBox(height: 2),
                             Text(
@@ -304,30 +281,24 @@ class _ProjectCardState extends State<_ProjectCard> {
                             ),
                           ],
                         ),
-                        Container(
-                          width: 1,
-                          height: 40,
-                          color: Colors.grey[300],
-                        ),
+                        Container(width: 1, height: 40, color: Colors.grey[300]),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
                               'Spent',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Colors.grey[600],
-                              ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
                             ),
                             const SizedBox(height: 2),
                             Text(
                               '\$${widget.project.spent.toStringAsFixed(0)}',
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 fontWeight: FontWeight.w600,
-                                color:
-                                    widget.project.spent >
-                                            widget.project.budget
-                                        ? Colors.red
-                                        : Colors.green,
+                                color: widget.project.spent > widget.project.budget
+                                    ? Colors.red
+                                    : Colors.green,
                               ),
                             ),
                           ],
@@ -366,4 +337,3 @@ class _ProjectCardState extends State<_ProjectCard> {
     return Colors.red;
   }
 }
-

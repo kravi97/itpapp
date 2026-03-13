@@ -48,11 +48,7 @@ class PulsingLoader extends StatelessWidget {
   final double size;
   final Color? color;
 
-  const PulsingLoader({
-    super.key,
-    this.size = 12,
-    this.color,
-  });
+  const PulsingLoader({super.key, this.size = 12, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -62,16 +58,16 @@ class PulsingLoader extends StatelessWidget {
     return Center(
       child: SizedBox.square(
         dimension: size,
-        child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: loaderColor,
-          ),
-        ).animate(onPlay: (controller) => controller.repeat()).scale(
-          begin: const Offset(0.8, 0.8),
-          end: const Offset(1.2, 1.2),
-          duration: const Duration(milliseconds: 1000),
-        ),
+        child:
+            Container(
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: loaderColor),
+                )
+                .animate(onPlay: (controller) => controller.repeat())
+                .scale(
+                  begin: const Offset(0.8, 0.8),
+                  end: const Offset(1.2, 1.2),
+                  duration: const Duration(milliseconds: 1000),
+                ),
       ),
     );
   }
@@ -95,20 +91,20 @@ class BouncingDotsLoader extends StatelessWidget {
           3,
           (index) => Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: SizedBox.square(
-              dimension: 8,
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: loaderColor,
-                ),
-              ),
-            ).animate(onPlay: (controller) => controller.repeat()).scaleY(
-              begin: 1,
-              end: 0.5,
-              duration: const Duration(milliseconds: 600),
-              delay: Duration(milliseconds: index * 150),
-            ),
+            child:
+                SizedBox.square(
+                      dimension: 8,
+                      child: Container(
+                        decoration: BoxDecoration(shape: BoxShape.circle, color: loaderColor),
+                      ),
+                    )
+                    .animate(onPlay: (controller) => controller.repeat())
+                    .scaleY(
+                      begin: 1,
+                      end: 0.5,
+                      duration: const Duration(milliseconds: 600),
+                      delay: Duration(milliseconds: index * 150),
+                    ),
           ),
         ),
       ),
@@ -152,10 +148,7 @@ class WaveLoader extends StatelessWidget {
   }
 
   Widget _buildWaveBar(Color color) {
-    return Container(
-      width: 4,
-      color: color,
-    );
+    return Container(width: 4, color: color);
   }
 }
 
@@ -165,12 +158,7 @@ class LoadingOverlay extends StatelessWidget {
   final Widget child;
   final String? message;
 
-  const LoadingOverlay({
-    super.key,
-    required this.isLoading,
-    required this.child,
-    this.message,
-  });
+  const LoadingOverlay({super.key, required this.isLoading, required this.child, this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -188,9 +176,7 @@ class LoadingOverlay extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text(
                     message!,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.white,
-                        ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
                   ),
                 ],
               ],
@@ -206,11 +192,7 @@ class CompactLoader extends StatelessWidget {
   final double size;
   final Color? color;
 
-  const CompactLoader({
-    super.key,
-    this.size = 24,
-    this.color,
-  });
+  const CompactLoader({super.key, this.size = 24, this.color});
 
   @override
   Widget build(BuildContext context) {

@@ -34,10 +34,7 @@ class DashboardScreen extends ConsumerWidget {
                 child: Container(
                   width: 12,
                   height: 12,
-                  decoration: const BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
-                  ),
+                  decoration: const BoxDecoration(color: Colors.green, shape: BoxShape.circle),
                 ),
               ),
             ),
@@ -54,9 +51,7 @@ class DashboardScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(16),
             children: [
               // Timer Card with fade animation
-              FadeInSlide(
-                child: TimerCard(timerState: timerState),
-              ),
+              FadeInSlide(child: TimerCard(timerState: timerState)),
               const SizedBox(height: 24),
 
               // Task Stats Section with animation
@@ -125,9 +120,9 @@ class DashboardScreen extends ConsumerWidget {
                 duration: const Duration(milliseconds: 700),
                 child: Text(
                   'Recent Tasks',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
               const SizedBox(height: 12),
@@ -141,11 +136,7 @@ class DashboardScreen extends ConsumerWidget {
                           padding: const EdgeInsets.all(32),
                           child: Column(
                             children: [
-                              Icon(
-                                Icons.inbox,
-                                size: 48,
-                                color: AppTheme.textTertiaryColor,
-                              ),
+                              Icon(Icons.inbox, size: 48, color: AppTheme.textTertiaryColor),
                               const SizedBox(height: 12),
                               Text(
                                 'No tasks yet',
@@ -222,11 +213,7 @@ class _StatCard extends StatelessWidget {
           border: Border.all(color: color.withOpacity(0.5), width: 2),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
-            BoxShadow(
-              color: color.withAlpha(50),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
+            BoxShadow(color: color.withAlpha(50), blurRadius: 8, offset: const Offset(0, 2)),
           ],
         ),
         child: Material(
@@ -286,10 +273,9 @@ class _TaskListItemState extends State<_TaskListItem> {
   @override
   Widget build(BuildContext context) {
     final statusColor = _getStatusColor(widget.task.status);
-    final progressValue =
-        widget.task.estimatedHours > 0
-            ? (widget.task.elapsedHours / widget.task.estimatedHours).clamp(0.0, 1.0)
-            : 0.0;
+    final progressValue = widget.task.estimatedHours > 0
+        ? (widget.task.elapsedHours / widget.task.estimatedHours).clamp(0.0, 1.0)
+        : 0.0;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -298,22 +284,21 @@ class _TaskListItemState extends State<_TaskListItem> {
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          boxShadow:
-              _isHovered
-                  ? [
-                    BoxShadow(
-                      color: statusColor.withAlpha(100),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ]
-                  : [
-                    BoxShadow(
-                      color: Colors.black.withAlpha(30),
-                      blurRadius: 4,
-                      offset: const Offset(0, 1),
-                    ),
-                  ],
+          boxShadow: _isHovered
+              ? [
+                  BoxShadow(
+                    color: statusColor.withAlpha(100),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
+              : [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(30),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
         ),
         child: Card(
           elevation: 0,
@@ -331,18 +316,18 @@ class _TaskListItemState extends State<_TaskListItem> {
                         children: [
                           Text(
                             widget.task.title,
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(height: 4),
                           Text(
                             widget.task.projectName ?? 'No Project',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppTheme.textSecondaryColor,
-                            ),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodySmall?.copyWith(color: AppTheme.textSecondaryColor),
                           ),
                         ],
                       ),
@@ -379,9 +364,7 @@ class _TaskListItemState extends State<_TaskListItem> {
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                         Icon(
-                          widget.task.isBillable
-                              ? Icons.check_circle
-                              : Icons.cancel,
+                          widget.task.isBillable ? Icons.check_circle : Icons.cancel,
                           size: 16,
                           color: widget.task.isBillable
                               ? AppTheme.successColor
@@ -390,11 +373,7 @@ class _TaskListItemState extends State<_TaskListItem> {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    AnimatedProgressBar(
-                      value: progressValue,
-                      color: statusColor,
-                      height: 6,
-                    ),
+                    AnimatedProgressBar(value: progressValue, color: statusColor, height: 6),
                   ],
                 ),
               ],

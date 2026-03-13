@@ -149,19 +149,13 @@ class StatCardSkeleton extends StatelessWidget {
     return ShimmerWidget(
       child: Container(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.grey[300],
-          borderRadius: BorderRadius.circular(12),
-        ),
+        decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(12)),
         child: Column(
           children: [
             Container(
               width: 40,
               height: 40,
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                shape: BoxShape.circle,
-              ),
+              decoration: BoxDecoration(color: Colors.grey[200], shape: BoxShape.circle),
             ),
             const SizedBox(height: 12),
             Container(
@@ -197,10 +191,7 @@ class BannerSkeleton extends StatelessWidget {
     return ShimmerWidget(
       child: Container(
         height: 120,
-        decoration: BoxDecoration(
-          color: Colors.grey[300],
-          borderRadius: BorderRadius.circular(12),
-        ),
+        decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(12)),
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,10 +240,8 @@ class ListSkeleton extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: itemCount,
-      itemBuilder: (context, index) => const Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
-        child: TaskCardSkeleton(),
-      ),
+      itemBuilder: (context, index) =>
+          const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: TaskCardSkeleton()),
     );
   }
 }
@@ -262,11 +251,7 @@ class GridSkeleton extends StatelessWidget {
   final int itemCount;
   final int crossAxisCount;
 
-  const GridSkeleton({
-    super.key,
-    this.itemCount = 4,
-    this.crossAxisCount = 2,
-  });
+  const GridSkeleton({super.key, this.itemCount = 4, this.crossAxisCount = 2});
 
   @override
   Widget build(BuildContext context) {
