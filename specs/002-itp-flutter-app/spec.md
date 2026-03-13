@@ -5,6 +5,24 @@
 **Status**: Draft
 **Input**: User description: "Build InTimePro Flutter mobile app for employee time tracking, task management, timesheet submission, leave management, notifications, and profile settings"
 
+## Clarifications *(Architecture Decisions)*
+
+### Session 2026-03-13
+
+#### Phase 1 - Core Architecture
+- **Q: API Backend Strategy** → **A: Mock APIs (hardcoded in-memory data)** - Use mock responses for faster iteration and zero backend dependency during feature development
+- **Q: Offline Timer Behavior** → **A: Continue locally, sync on reconnect** - Running task timers persist locally and resume/reconcile when connectivity is restored
+- **Q: App Navigation Structure** → **A: Bottom Tab Navigation** - Implement 5-6 main tabs (Dashboard, Tasks, Timesheet, Projects, Leave, Settings) with bottom tab bar
+- **Q: Timer Time Source** → **A: Server-synced with periodic validation** - Dashboard timer uses device clock for real-time updates but validates against server at sync points
+- **Q: Background Timer Behavior** → **A: Persist locally and resume on app relaunch** - Timer state saved locally; app resumes counting time after force-close or backgrounding with server reconciliation on next sync
+
+#### Phase 2 - Technology Stack
+- **Q: State Management Library** → **A: Provider** - Use Provider for global state management (lightweight, suitable for rapid development, good ecosystem integration)
+- **Q: Offline Data Persistence** → **A: SharedPreferences + in-memory** - Use SharedPreferences for simple key-value caching and in-memory storage for session state during app lifecycle
+- **Q: Timer Sync Schedule** → **A: App lifecycle sync** - Sync timer state when app returns to foreground, maximizing simplicity while ensuring reasonable validation accuracy
+
+---
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Employee Login & Authentication (Priority: P1)
