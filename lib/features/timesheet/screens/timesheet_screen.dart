@@ -69,17 +69,15 @@ class TimesheetScreen extends ConsumerWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showAddEntryDialog(context, ref);
-        },
+        onPressed: () => showDialog(
+          context: context,
+          barrierDismissible: true,
+          builder: (BuildContext context) => const _AddTimesheetEntryDialog(),
+        ),
         tooltip: 'Add Time Entry',
         child: const Icon(Icons.add),
       ),
     );
-  }
-
-  void _showAddEntryDialog(BuildContext context, WidgetRef ref) {
-    showDialog(context: context, builder: (context) => const _AddTimesheetEntryDialog());
   }
 }
 
@@ -259,80 +257,103 @@ class _AddTimesheetEntryDialogState extends ConsumerState<_AddTimesheetEntryDial
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Add Time Entry', style: Theme.of(context).textTheme.titleLarge),
-              const SizedBox(height: 24),
-              // Date Picker
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text('Date: ${DateFormat('MMM dd, yyyy').format(_selectedDate!)}'),
-                trailing: IconButton(
-                  icon: const Icon(Icons.calendar_today),
-                  onPressed: () async {
-                    final date = await showDatePicker(
-                      context: context,
-                      initialDate: _selectedDate!,
-                      firstDate: DateTime.now().subtract(const Duration(days: 90)),
-                      lastDate: DateTime.now(),
-                    );
-                    if (date != null) {
-                      setState(() => _selectedDate = date);
-                    }
-                  },
-                ),
+    return AlertDialog(
+      title: const Text('Add Time Entry'),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Date Picker
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text('Date: ${DateFormat('MMM dd, yyyy').format(_selectedDate!)}'),
+              trailing: IconButton(
+                icon: const Icon(Icons.calendar_today),
+                onPressed: () async {
+                  final date = await showDatePicker(
+                    context: context,
+                    initialDate: _selectedDate!,
+                    firstDate: DateTime.now().subtract(const Duration(days: 90)),
+                    lastDate: DateTime.now(),
+                  );
+                  if (date != null) {
+                    setState(() => _selectedDate = date);
+                  }
+                },
               ),
-              const SizedBox(height: 16),
-              // Hours input
-              TextField(
-                controller: _hoursController,
-                decoration: InputDecoration(
-                  labelText: 'Hours Worked',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                  suffixText: 'hours',
-                ),
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            ),
+            const SizedBox(height: 16),
+            // Hours input
+            TextField(
+              controller: _hoursController,
+              decoration: InputDecoration(
+                labelText: 'Hours Worked',
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                suffixText: 'hours',
               ),
-              const SizedBox(height: 16),
-              // Notes input
-              TextField(
-                controller: _notesController,
-                decoration: InputDecoration(
-                  labelText: 'Notes (Optional)',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                  hintText: 'What did you work on?',
-                ),
-                maxLines: 3,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            ),
+            const SizedBox(height: 16),
+            // Notes input
+            TextField(
+              controller: _notesController,
+              decoration: InputDecoration(
+                labelText: 'Notes (Optional)',
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                hintText: 'What did you work on?',
               ),
-              const SizedBox(height: 24),
-              // Action buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-                  const SizedBox(width: 12),
-                  FilledButton(
-                    onPressed: () {
-                      // TODO: Implement save logic
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Time entry added successfully')),
-                      );
-                    },
-                    child: const Text('Save'),
-                  ),
-                ],
-              ),
-            ],
-          ),
+              maxLines: 3,
+            ),
+          ],
         ),
       ),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        ElevatedButton(
+          onPressed: () async {
+            if (_hoursController.text.isEmpty) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Please enter hours worked')));
+              return;
+            }
+
+            final hours = double.tryParse(_hoursController.text) ?? 0.0;
+            if (hours <= 0) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Hours must be greater than 0')));
+              return;
+            }
+
+            final entry = TimesheetEntry(
+              id: 'entry_${DateTime.now().millisecondsSinceEpoch}',
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
+              taskId: 'task_default',
+              taskName: _notesController.text.isNotEmpty ? _notesController.text : 'Work Entry',
+              date: _selectedDate!,
+              hoursWorked: hours,
+              projectId: 'project_default',
+              projectName: 'General',
+              notes: _notesController.text.isEmpty ? null : _notesController.text,
+            );
+
+            await ref.read(timesheetNotifierProvider.notifier).addEntry(entry);
+
+            if (mounted) {
+              ref.invalidate(timesheetsProvider);
+              ref.invalidate(currentTimesheetProvider);
+              Navigator.pop(context);
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Time entry added successfully')));
+            }
+          },
+          child: const Text('Save'),
+        ),
+      ],
     );
   }
 }

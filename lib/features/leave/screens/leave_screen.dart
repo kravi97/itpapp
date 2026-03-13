@@ -59,17 +59,15 @@ class LeaveScreen extends ConsumerWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showApplyLeaveDialog(context, ref);
-        },
+        onPressed: () => showDialog(
+          context: context,
+          barrierDismissible: true,
+          builder: (BuildContext context) => const _ApplyLeaveDialog(),
+        ),
         tooltip: 'Apply for Leave',
         child: const Icon(Icons.add),
       ),
     );
-  }
-
-  void _showApplyLeaveDialog(BuildContext context, WidgetRef ref) {
-    showDialog(context: context, builder: (context) => const _ApplyLeaveDialog());
   }
 }
 
@@ -228,112 +226,130 @@ class _ApplyLeaveDialogState extends ConsumerState<_ApplyLeaveDialog> {
         ? _toDate!.difference(_fromDate!).inDays + 1
         : 1;
 
-    return Dialog(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Apply for Leave', style: Theme.of(context).textTheme.titleLarge),
-              const SizedBox(height: 24),
-              // Leave Type
-              DropdownButtonFormField<LeaveType>(
-                initialValue: _selectedType,
-                decoration: InputDecoration(
-                  labelText: 'Leave Type',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                ),
-                items: LeaveType.values
-                    .map((type) => DropdownMenuItem(value: type, child: Text(type.displayName)))
-                    .toList(),
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() => _selectedType = value);
+    return AlertDialog(
+      title: const Text('Apply for Leave'),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Leave Type
+            DropdownButtonFormField<LeaveType>(
+              initialValue: _selectedType,
+              decoration: InputDecoration(
+                labelText: 'Leave Type',
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              items: LeaveType.values
+                  .map((type) => DropdownMenuItem(value: type, child: Text(type.displayName)))
+                  .toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() => _selectedType = value);
+                }
+              },
+            ),
+            const SizedBox(height: 16),
+            // From Date
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text('From: ${DateFormat('MMM dd, yyyy').format(_fromDate!)}'),
+              trailing: IconButton(
+                icon: const Icon(Icons.calendar_today),
+                onPressed: () async {
+                  final date = await showDatePicker(
+                    context: context,
+                    initialDate: _fromDate!,
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime.now().add(const Duration(days: 365)),
+                  );
+                  if (date != null) {
+                    setState(() => _fromDate = date);
                   }
                 },
               ),
-              const SizedBox(height: 16),
-              // From Date
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text('From: ${DateFormat('MMM dd, yyyy').format(_fromDate!)}'),
-                trailing: IconButton(
-                  icon: const Icon(Icons.calendar_today),
-                  onPressed: () async {
-                    final date = await showDatePicker(
-                      context: context,
-                      initialDate: _fromDate!,
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime.now().add(const Duration(days: 365)),
-                    );
-                    if (date != null) {
-                      setState(() => _fromDate = date);
-                    }
-                  },
-                ),
+            ),
+            // To Date
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text('To: ${DateFormat('MMM dd, yyyy').format(_toDate!)}'),
+              trailing: IconButton(
+                icon: const Icon(Icons.calendar_today),
+                onPressed: () async {
+                  final date = await showDatePicker(
+                    context: context,
+                    initialDate: _toDate!,
+                    firstDate: _fromDate ?? DateTime.now(),
+                    lastDate: DateTime.now().add(const Duration(days: 365)),
+                  );
+                  if (date != null) {
+                    setState(() => _toDate = date);
+                  }
+                },
               ),
-              // To Date
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text('To: ${DateFormat('MMM dd, yyyy').format(_toDate!)}'),
-                trailing: IconButton(
-                  icon: const Icon(Icons.calendar_today),
-                  onPressed: () async {
-                    final date = await showDatePicker(
-                      context: context,
-                      initialDate: _toDate!,
-                      firstDate: _fromDate ?? DateTime.now(),
-                      lastDate: DateTime.now().add(const Duration(days: 365)),
-                    );
-                    if (date != null) {
-                      setState(() => _toDate = date);
-                    }
-                  },
-                ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Total: $days day(s)',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: AppTheme.primary,
               ),
-              const SizedBox(height: 16),
-              Text(
-                'Total: $days day(s)',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.primary,
-                ),
+            ),
+            const SizedBox(height: 16),
+            // Reason
+            TextField(
+              controller: _reasonController,
+              decoration: InputDecoration(
+                labelText: 'Reason',
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                hintText: 'Please specify your reason for leave',
               ),
-              const SizedBox(height: 16),
-              // Reason
-              TextField(
-                controller: _reasonController,
-                decoration: InputDecoration(
-                  labelText: 'Reason',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                  hintText: 'Please specify your reason for leave',
-                ),
-                maxLines: 3,
-              ),
-              const SizedBox(height: 24),
-              // Action buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-                  const SizedBox(width: 12),
-                  FilledButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Leave application submitted successfully')),
-                      );
-                    },
-                    child: const Text('Apply'),
-                  ),
-                ],
-              ),
-            ],
-          ),
+              maxLines: 3,
+            ),
+          ],
         ),
       ),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        ElevatedButton(
+          onPressed: () async {
+            if (_reasonController.text.isEmpty) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Please provide a reason')));
+              return;
+            }
+
+            final days = _toDate!.difference(_fromDate!).inDays + 1;
+            final application = LeaveApplication(
+              id: 'leave_${DateTime.now().millisecondsSinceEpoch}',
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
+              employeeId: 'emp_001',
+              employeeName: 'Current User',
+              leaveType: _selectedType,
+              fromDate: _fromDate!,
+              toDate: _toDate!,
+              numberOfDays: days,
+              reason: _reasonController.text,
+              status: LeaveStatus.pending,
+            );
+
+            await ref.read(leaveNotifierProvider.notifier).applyForLeave(application);
+
+            if (mounted) {
+              ref.invalidate(leaveApplicationsProvider);
+              ref.invalidate(leaveBalanceProvider);
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Leave application submitted successfully')),
+              );
+            }
+          },
+          child: const Text('Apply'),
+        ),
+      ],
     );
   }
 }

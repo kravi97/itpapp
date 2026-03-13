@@ -232,7 +232,20 @@ class MockApiService {
     await Future.delayed(_apiDelay);
     return {
       'success': true,
-      'data': {'timesheets': []},
+      'data': {
+        'timesheets': [
+          {
+            'id': 'ts_1',
+            'weekStartDate': DateTime.now().subtract(const Duration(days: 3)).toIso8601String(),
+            'totalHours': TimesheetMockData.mockTimesheetEntries.fold<double>(
+              0,
+              (sum, entry) => sum + (entry['hours'] as num? ?? 0).toDouble(),
+            ),
+            'status': 'draft',
+            'entries': TimesheetMockData.mockTimesheetEntries,
+          },
+        ],
+      },
     };
   }
 
@@ -243,10 +256,13 @@ class MockApiService {
       'data': {
         'timesheet': {
           'id': 'ts_1',
-          'weekStartDate': DateTime.now().toIso8601String(),
-          'totalHours': 32.5,
+          'weekStartDate': DateTime.now().subtract(const Duration(days: 3)).toIso8601String(),
+          'totalHours': TimesheetMockData.mockTimesheetEntries.fold<double>(
+            0,
+            (sum, entry) => sum + (entry['hours'] as num? ?? 0).toDouble(),
+          ),
           'status': 'draft',
-          'entries': [],
+          'entries': TimesheetMockData.mockTimesheetEntries,
         },
       },
     };
@@ -256,7 +272,7 @@ class MockApiService {
     await Future.delayed(_apiDelay);
     return {
       'success': true,
-      'data': {'entries': []},
+      'data': {'entries': TimesheetMockData.mockTimesheetEntries},
     };
   }
 
@@ -270,6 +286,38 @@ class MockApiService {
 
   static Future<Map<String, dynamic>> addTimesheetEntry(dynamic entry) async {
     await Future.delayed(_apiDelay);
+
+    // Add entry to mock storage
+    try {
+      final entryMap = {
+        'entryId': entry.id ?? 'TS-${DateTime.now().millisecondsSinceEpoch}',
+        'date': entry.date?.toString() ?? DateTime.now().toString(),
+        'hours': entry.hoursWorked ?? 0.0,
+        'projectId': entry.projectId ?? 'PROJ-DEFAULT',
+        'projectName': entry.projectName ?? 'General',
+        'taskId': entry.taskId ?? 'TASK-DEFAULT',
+        'taskName': entry.taskName ?? 'Work Entry',
+        'notes': entry.notes ?? '',
+        'status': 'Draft',
+      };
+      TimesheetMockData.mockTimesheetEntries.insert(0, entryMap);
+    } catch (e) {
+      // Fallback for Map type
+      if (entry is Map) {
+        TimesheetMockData.mockTimesheetEntries.insert(0, {
+          'entryId': entry['id'] ?? 'TS-${DateTime.now().millisecondsSinceEpoch}',
+          'date': entry['date']?.toString() ?? DateTime.now().toString(),
+          'hours': entry['hoursWorked'] ?? 0.0,
+          'projectId': entry['projectId'] ?? 'PROJ-DEFAULT',
+          'projectName': entry['projectName'] ?? 'General',
+          'taskId': entry['taskId'] ?? 'TASK-DEFAULT',
+          'taskName': entry['taskName'] ?? 'Work Entry',
+          'notes': entry['notes'] ?? '',
+          'status': 'Draft',
+        });
+      }
+    }
+
     return {'success': true, 'message': 'Timesheet entry added successfully'};
   }
 
@@ -277,12 +325,48 @@ class MockApiService {
     await Future.delayed(_apiDelay);
     return {
       'success': true,
-      'data': {'leaveApplications': []},
+      'data': {'leaveApplications': LeaveMockData.mockLeaveApplications},
     };
   }
 
   static Future<Map<String, dynamic>> applyForLeave(dynamic application) async {
     await Future.delayed(_apiDelay);
+
+    // Add application to mock storage
+    try {
+      final leaveTypeString = application.leaveType?.toString() ?? 'annual';
+      final appMap = {
+        'id': application.id ?? 'LEAVE-${DateTime.now().millisecondsSinceEpoch}',
+        'employeeId': application.employeeId ?? 'EMP-001',
+        'employeeName': application.employeeName ?? 'Current User',
+        'leaveType': leaveTypeString,
+        'fromDate': application.fromDate?.toIso8601String() ?? DateTime.now().toIso8601String(),
+        'toDate': application.toDate?.toIso8601String() ?? DateTime.now().toIso8601String(),
+        'numberOfDays': application.numberOfDays ?? 1,
+        'reason': application.reason ?? '',
+        'status': 'Pending',
+        'createdAt': DateTime.now().toIso8601String(),
+      };
+      LeaveMockData.mockLeaveApplications.insert(0, appMap);
+    } catch (e) {
+      // Fallback for Map type
+      if (application is Map) {
+        final days = application['numberOfDays'] ?? 1;
+        LeaveMockData.mockLeaveApplications.insert(0, {
+          'id': application['id'] ?? 'LEAVE-${DateTime.now().millisecondsSinceEpoch}',
+          'employeeId': application['employeeId'] ?? 'EMP-001',
+          'employeeName': application['employeeName'] ?? 'Current User',
+          'leaveType': application['leaveType']?.toString() ?? 'annual',
+          'fromDate': application['fromDate']?.toString() ?? DateTime.now().toString(),
+          'toDate': application['toDate']?.toString() ?? DateTime.now().toString(),
+          'numberOfDays': days,
+          'reason': application['reason'] ?? '',
+          'status': 'Pending',
+          'createdAt': DateTime.now().toIso8601String(),
+        });
+      }
+    }
+
     return {'success': true, 'message': 'Leave application submitted successfully'};
   }
 
