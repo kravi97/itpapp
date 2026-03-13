@@ -4,7 +4,6 @@ library;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:itpapp/core/storage/local_storage_service.dart';
 import 'package:itpapp/core/storage/storage_keys.dart';
-import 'package:itpapp/core/config/app_config.dart';
 import 'package:itpapp/core/network/mock/mock_api_service.dart';
 import 'package:itpapp/features/auth/providers/auth_provider.dart';
 

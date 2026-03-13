@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:itpapp/core/theme/app_theme.dart';
 import 'package:itpapp/core/navigation/route_names.dart';
 import 'package:itpapp/features/auth/providers/auth_provider.dart';
 import 'package:itpapp/features/settings/providers/settings_provider.dart';
