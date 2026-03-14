@@ -80,7 +80,13 @@ class TasksScreen extends ConsumerWidget {
               },
             );
           },
-          loading: () => const Center(child: CircularProgressIndicator()),
+          loading: () => const Center(
+            child: SizedBox(
+              width: 50,
+              height: 50,
+              child: CircularProgressIndicator(strokeWidth: 3),
+            ),
+          ),
           error: (error, stackTrace) => Center(child: Text('Error: $error')),
         ),
       ),
@@ -423,7 +429,13 @@ class _CreateTaskDialogState extends ConsumerState<_CreateTaskDialog> {
                     });
                   },
                 ),
-                loading: () => const Center(child: CircularProgressIndicator()),
+                loading: () => const Center(
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator(strokeWidth: 3),
+                  ),
+                ),
                 error: (e, st) => DropdownButtonFormField<String>(
                   initialValue: null,
                   decoration: const InputDecoration(

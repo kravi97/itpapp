@@ -149,16 +149,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         Text(
                           'InTimePro',
                           style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w900,
                             color: Colors.white,
+                            fontSize: 36,
+                            letterSpacing: -0.5,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 12),
                         Text(
                           'Time Tracking & Task Management',
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Colors.white.withAlpha(220),
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: Colors.white.withAlpha(230),
                             fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            height: 1.4,
                           ),
                         ),
                       ],
@@ -182,16 +186,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       children: [
                         Text(
                           'Welcome Back',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black87,
+                            fontSize: 28,
+                            letterSpacing: -0.5,
+                          ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 12),
                         Text(
                           'Sign in to your account to continue',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyMedium?.copyWith(color: AppTheme.textSecondaryColor),
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15,
+                            height: 1.5,
+                          ),
                         ),
                         const SizedBox(height: 32),
 
@@ -225,7 +235,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 : () {
                                     context.go(RouteNames.forgotPassword);
                                   },
-                            child: const Text('Forgot Password?'),
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+                            ),
+                            child: Text(
+                              'Forgot Password?',
+                              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                color: AppTheme.primaryColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13,
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 24),
@@ -237,9 +257,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             child: Container(
                               padding: const EdgeInsets.all(14),
                               decoration: BoxDecoration(
-                                color: AppTheme.errorColor.withOpacity(0.12),
+                                color: AppTheme.errorColor.withOpacity(0.10),
                                 border: Border.all(
-                                  color: AppTheme.errorColor.withOpacity(0.6),
+                                  color: AppTheme.errorColor.withOpacity(0.5),
                                   width: 1.5,
                                 ),
                                 borderRadius: BorderRadius.circular(10),
@@ -257,7 +277,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       _errorMessage!,
                                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                         color: AppTheme.errorColor,
-                                        fontWeight: FontWeight.w500,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 13,
                                       ),
                                     ),
                                   ),
@@ -275,27 +296,33 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             child: ElevatedButton(
                               onPressed: _isLoading ? null : _handleLogin,
                               style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                backgroundColor: AppTheme.primaryColor,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
+                                elevation: 2,
+                                shadowColor: AppTheme.primaryColor.withAlpha(100),
                               ),
                               child: _isLoading
-                                  ? const SizedBox(
-                                      height: 20,
-                                      width: 20,
+                                  ? SizedBox(
+                                      height: 22,
+                                      width: 22,
                                       child: CircularProgressIndicator(
                                         strokeWidth: 2.5,
-                                        valueColor: AlwaysStoppedAnimation<Color>(
-                                          AppTheme.onPrimaryColor,
+                                        valueColor: const AlwaysStoppedAnimation<Color>(
+                                          Colors.white,
                                         ),
                                       ),
                                     )
                                   : Text(
                                       'Sign In',
-                                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                        color: AppTheme.onPrimaryColor,
-                                        fontWeight: FontWeight.bold,
+                                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16,
+                                        letterSpacing: 0.5,
                                       ),
                                     ),
                             ),
@@ -398,17 +425,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       controller: controller,
       enabled: enabled,
       keyboardType: keyboardType,
+      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black87),
       decoration: InputDecoration(
         labelText: label,
+        labelStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
         hintText: hint,
-        prefixIcon: Icon(icon),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        hintStyle: TextStyle(fontSize: 14, color: Colors.grey[400], fontWeight: FontWeight.w400),
+        prefixIcon: Icon(icon, color: AppTheme.primaryColor, size: 22),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
+        ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppTheme.primaryColor, width: 2),
         ),
         filled: true,
-        fillColor: AppTheme.backgroundColor,
+        fillColor: Colors.grey[50],
         contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       ),
     );
@@ -419,25 +456,39 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       controller: _passwordController,
       enabled: !_isLoading,
       obscureText: _obscurePassword,
+      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black87),
       decoration: InputDecoration(
         labelText: 'Password',
+        labelStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
         hintText: 'Enter your password',
-        prefixIcon: const Icon(Icons.lock_outlined),
+        hintStyle: TextStyle(fontSize: 14, color: Colors.grey[400], fontWeight: FontWeight.w400),
+        prefixIcon: Icon(Icons.lock_outlined, color: AppTheme.primaryColor, size: 22),
         suffixIcon: IconButton(
-          icon: Icon(_obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+          icon: Icon(
+            _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+            color: Colors.grey[600],
+            size: 20,
+          ),
           onPressed: () {
             setState(() {
               _obscurePassword = !_obscurePassword;
             });
           },
         ),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
+        ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppTheme.primaryColor, width: 2),
         ),
         filled: true,
-        fillColor: AppTheme.backgroundColor,
+        fillColor: Colors.grey[50],
         contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       ),
     );
